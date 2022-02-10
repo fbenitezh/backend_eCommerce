@@ -24,4 +24,7 @@ export const config = {
       basePath:"./src/storage/"
     }
   },
+  admin:{
+    email:'francobenitez980@gmail.com'
+  }
 };

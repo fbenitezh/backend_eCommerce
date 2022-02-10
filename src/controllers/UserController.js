@@ -1,4 +1,7 @@
 import Controller from '../services/Controller.js';
+import Nodemailer from '../utils/nodemailer.class.js';
+import {config} from '../config/index.js';
+const nodemailer = new Nodemailer();
 
 class UserController extends Controller {
 
@@ -36,10 +39,20 @@ class UserController extends Controller {
       }
     }
     
-    postSignUp(req,res){
-      console.log(req.file);
+    async postSignUp(req,res){
       const isAuthenticated = req.isAuthenticated();
       if(isAuthenticated){
+        const content = `
+          <ul>
+            <li>Email: ${req.body.username} <li>
+            <li>Nombre: ${req.body.firstname}<li>
+            <li>Apellido: ${req.body.lastname}<li>
+            <li>Dirección: ${req.body.address}<li>
+            <li>Edad: ${req.body.years}<li>
+            <li>Celular: ${req.body.phone}<li>
+          </ul>
+        `;
+        await nodemailer.send(process.env.EMAIL_GMAIL,"Nuevo registro",config.admin.email,content);
         return res.redirect('/');
       }
       // res.sendFile(path.resolve() + '/src/views/index.html');
